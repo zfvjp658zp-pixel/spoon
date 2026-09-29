@@ -19,7 +19,7 @@ video{width:100%;margin-top:10px;border-radius:10px}
 <body>
 <main>
 <h1 id="title">SPOON SETLIST</h1>
-
+<button onclick="let d=prompt('概要を入力');if(d!==null){localStorage.description=d;document.getElementById('description').textContent=d}">概要を設定</button><p id="description"></p><script>document.getElementById('description').textContent=localStorage.description||''</script>
 <div class="box">
 <input id="titleInput" placeholder="配信タイトル">
 <button onclick="setTitle()">タイトルを設定</button>
