@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spoon Setlist</title>
+<style>
+body{margin:0;background:#f7f7f7;font-family:-apple-system,sans-serif;color:#222}
+main{max-width:600px;margin:auto;padding:30px 16px}
+h1{text-align:center}
+.box,.song{background:white;border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 2px 10px #0001}
+input,button{width:100%;box-sizing:border-box;padding:12px;margin:5px 0;border-radius:10px;border:1px solid #ddd;font-size:15px}
+button{background:#222;color:white;border:0}
+.song b{font-size:17px}.num{color:#999;font-size:12px}
+a{display:inline-block;margin-top:8px;color:#555}
+video{width:100%;margin-top:10px;border-radius:10px}
+</style>
+</head>
+<body>
+<main>
+<h1 id="title">SPOON SETLIST</h1>
+
+<div class="box">
+<input id="titleInput" placeholder="配信タイトル">
+<button onclick="setTitle()">タイトルを設定</button>
+</div>
+
+<div class="box">
+<input id="name" placeholder="曲名">
+<input id="replay" placeholder="SpoonリプレイURL">
+<input id="video" placeholder="動画URL（任意）">
+<button onclick="add()">＋ セトリに追加</button>
+</div>
+
+<div id="list"></div>
+</main>
+
+<script>
+let songs=JSON.parse(localStorage.songs||"[]");
+
+function setTitle(){
+ let t=document.getElementById("titleInput").value;
+ if(t){document.getElementById("title").textContent=t;
+ localStorage.title=t}
+}
+
+function add(){
+ let n=document.getElementById("name").value;
+ let r=document.getElementById("replay").value;
+ let v=document.getElementById("video").value;
+ if(!n)return;
+ songs.push({n,r,v});
+ localStorage.songs=JSON.stringify(songs);
+ document.getElementById("name").value="";
+ document.getElementById("replay").value="";
+ document.getElementById("video").value="";
+ show();
+}
+
+function del(i){
+ songs.splice(i,1);
+ localStorage.songs=JSON.stringify(songs);
+ show();
+}
+
+function show(){
+ document.getElementById("list").innerHTML=songs.map((s,i)=>`
+ <div class="song">
+ <div class="num">${String(i+1).padStart(2,"0")}</div>
+ <b>${s.n}</b><br>
+ ${s.r?`<a href="${s.r}" target="_blank">▶ Spoonリプレイ</a>`:""}
+ ${s.v?`<video src="${s.v}" controls playsinline></video>`:""}
+ <button onclick="del(${i})">削除</button>
+ </div>`).join("");
+}
+
+if(localStorage.title)document.getElementById("title").textContent=localStorage.title;
+show();
+</script>
+</body>
+</html>
