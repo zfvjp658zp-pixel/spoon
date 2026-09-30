@@ -3,76 +3,453 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Spoon Setlist</title>
+<title>livサン's Setlist Record</title>
 
 <style>
+*{box-sizing:border-box}
+
 body{
   margin:0;
-  background:#f7f7f7;
+  background:#080808;
+  color:#eee;
   font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
-  color:#222;
 }
+
+button,input,textarea{
+  font:inherit;
+}
+
+a{
+  color:inherit;
+}
+
 main{
-  max-width:600px;
+  max-width:760px;
   margin:auto;
-  padding:24px 16px 50px;
+  padding:24px 16px 80px;
 }
-h1{
+
+/* HEADER */
+
+.header{
   text-align:center;
+  padding:20px 0 30px;
 }
-.box,.setlist{
-  background:white;
-  border-radius:16px;
-  padding:18px;
-  margin:16px 0;
-  box-shadow:0 2px 8px #ddd;
+
+.header h1{
+  font-size:28px;
+  letter-spacing:4px;
+  margin:10px 0;
 }
-input,textarea,button{
+
+.header p{
+  color:#777;
+  letter-spacing:3px;
+  font-size:12px;
+}
+
+/* LINKS */
+
+.links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  margin-bottom:30px;
+}
+
+.links a{
+  text-decoration:none;
+  border:1px solid #333;
+  border-radius:30px;
+  padding:11px 18px;
+  color:#aaa;
+  font-size:14px;
+}
+
+.links a:hover{
+  border-color:#888;
+}
+
+/* STATS */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  border-top:1px solid #292929;
+  border-bottom:1px solid #292929;
+  margin:0 -16px 25px;
+}
+
+.stat{
+  text-align:center;
+  padding:25px 5px;
+  border-right:1px solid #292929;
+}
+
+.stat:last-child{
+  border-right:0;
+}
+
+.stat strong{
+  display:block;
+  font-size:28px;
+}
+
+.stat span{
+  color:#555;
+  font-size:12px;
+  letter-spacing:2px;
+}
+
+/* SEARCH */
+
+.searchArea{
+  display:flex;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.searchArea input{
+  flex:1;
+  min-width:0;
+}
+
+input,textarea{
   width:100%;
-  box-sizing:border-box;
-  padding:12px;
-  margin:6px 0;
-  border-radius:10px;
-  border:1px solid #ccc;
-  font-size:16px;
+  background:#101010;
+  color:#eee;
+  border:1px solid #303030;
+  border-radius:25px;
+  padding:13px 17px;
+  outline:none;
 }
+
 textarea{
-  min-height:100px;
+  border-radius:14px;
+  min-height:90px;
   resize:vertical;
 }
-button{
-  background:#222;
-  color:white;
-  border:0;
+
+input:focus,textarea:focus{
+  border-color:#777;
 }
+
+.filterBtn{
+  white-space:nowrap;
+  border:1px solid #333;
+  background:#101010;
+  color:#aaa;
+  border-radius:25px;
+  padding:0 17px;
+}
+
+.filterBtn.active{
+  border-color:#ff7540;
+  color:#ff7540;
+}
+
+/* SECTION */
+
+.sectionTitle{
+  padding:17px 0;
+  border-bottom:1px solid #222;
+  color:#777;
+  letter-spacing:4px;
+  font-size:14px;
+}
+
+/* YEAR */
+
+.year{
+  margin-top:35px;
+}
+
+.yearTitle{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  color:#555;
+  letter-spacing:5px;
+  font-size:14px;
+}
+
+.yearTitle:after{
+  content:"";
+  height:1px;
+  background:#292929;
+  flex:1;
+}
+
+/* MONTH */
+
+.month{
+  margin:25px 0;
+  border:1px solid #292929;
+  border-radius:16px;
+  background:#111;
+  overflow:hidden;
+}
+
+.monthHead{
+  padding:24px 20px 18px;
+}
+
+.monthName{
+  font-size:23px;
+  font-weight:bold;
+  letter-spacing:1px;
+}
+
+.monthCount{
+  color:#555;
+  margin-top:8px;
+}
+
+.rankings{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  border-top:1px solid #242424;
+  padding-top:20px;
+  margin-top:18px;
+}
+
+.rankTitle{
+  color:#555;
+  font-size:11px;
+  letter-spacing:4px;
+  margin-bottom:12px;
+}
+
+.rank{
+  display:flex;
+  gap:8px;
+  margin:9px 0;
+  font-size:14px;
+}
+
+.rank .num{
+  color:#555;
+  width:18px;
+}
+
+.rank .count{
+  margin-left:auto;
+  color:#555;
+}
+
+/* STREAM */
+
+.stream{
+  border-top:1px solid #242424;
+}
+
+.streamHead{
+  display:grid;
+  grid-template-columns:55px 1fr 42px;
+  align-items:center;
+  padding:20px;
+  cursor:pointer;
+}
+
+.streamNo{
+  color:#555;
+}
+
+.streamTitle{
+  font-size:18px;
+  font-weight:bold;
+}
+
+.streamSongs{
+  color:#555;
+  margin-top:5px;
+  font-size:14px;
+}
+
+.arrow{
+  border:1px solid #333;
+  border-radius:9px;
+  width:38px;
+  height:38px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#777;
+}
+
+.streamBody{
+  display:none;
+  padding:0 20px 20px 75px;
+}
+
+.stream.open .streamBody{
+  display:block;
+}
+
+.overview{
+  color:#aaa;
+  white-space:pre-wrap;
+  line-height:1.7;
+  padding:15px;
+  background:#0b0b0b;
+  border-radius:10px;
+  margin-bottom:15px;
+}
+
 .song{
-  padding:12px 0;
-  border-bottom:1px solid #eee;
+  padding:14px 0;
+  border-bottom:1px solid #202020;
 }
+
 .song:last-child{
   border-bottom:0;
 }
-.song b{
-  font-size:17px;
-}
-.num{
-  color:#999;
-  margin-right:6px;
-}
-a{
-  display:inline-block;
-  margin-top:6px;
+
+.songNo{
   color:#555;
+  font-size:12px;
 }
-.overview{
-  white-space:pre-wrap;
-  background:#f5f5f5;
-  padding:12px;
-  border-radius:10px;
+
+.songName{
+  font-size:17px;
+  margin-top:4px;
+}
+
+.artist{
+  color:#555;
+  margin-top:4px;
+  font-size:14px;
+}
+
+.songLinks{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:9px;
+}
+
+.songLinks a{
+  text-decoration:none;
+  border:1px solid #333;
+  border-radius:20px;
+  padding:6px 10px;
+  font-size:12px;
+  color:#aaa;
+}
+
+.time{
+  color:#777;
+  font-size:12px;
+  margin-top:8px;
+}
+
+/* ADD */
+
+.addBox{
+  margin-top:50px;
+  border:1px solid #292929;
+  border-radius:16px;
+  padding:20px;
+  background:#101010;
+}
+
+.addBox h2{
+  margin-top:0;
+  font-size:18px;
+}
+
+.field{
   margin:10px 0;
 }
-.delete{
-  background:#c33;
+
+.field label{
+  display:block;
+  color:#777;
+  font-size:12px;
+  margin:0 0 6px 5px;
+}
+
+.primary{
+  width:100%;
+  border:0;
+  border-radius:25px;
+  padding:13px;
+  background:#eee;
+  color:#111;
+  margin-top:10px;
+}
+
+.songInput{
+  border:1px solid #292929;
+  border-radius:13px;
+  padding:12px;
+  margin:10px 0;
+}
+
+.songInputTitle{
+  color:#aaa;
+  font-size:13px;
+  margin-bottom:8px;
+}
+
+.smallBtn{
+  border:1px solid #333;
+  background:#111;
+  color:#aaa;
+  border-radius:20px;
+  padding:8px 13px;
+}
+
+.deleteBtn{
+  border:1px solid #533;
+  background:#180d0d;
+  color:#d88;
+  border-radius:20px;
+  padding:7px 12px;
+  margin-top:10px;
+}
+
+.empty{
+  text-align:center;
+  color:#555;
+  padding:50px 10px;
+}
+
+/* MOBILE */
+
+@media(max-width:550px){
+  .stats{
+    grid-template-columns:repeat(3,1fr);
+  }
+
+  .stat strong{
+    font-size:22px;
+  }
+
+  .rankings{
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+
+  .streamHead{
+    grid-template-columns:45px 1fr 38px;
+    padding:17px 14px;
+  }
+
+  .streamBody{
+    padding-left:58px;
+    padding-right:14px;
+  }
+
+  .searchArea{
+    flex-direction:column;
+  }
+
+  .filterBtn{
+    padding:11px;
+  }
 }
 </style>
 </head>
@@ -81,149 +458,93 @@ a{
 
 <main>
 
-<h1>SPOON SETLIST</h1>
+<header class="header">
+  <h1>livサン's Setlist</h1>
+  <p>SETLIST RECORD · UPDATED REGULARLY</p>
+</header>
 
-<div class="box">
-  <input id="setTitle" placeholder="セトリのタイトル">
-  <textarea id="setOverview" placeholder="このセトリの概要"></textarea>
-  <button onclick="createSetlist()">＋このセトリを作成</button>
+<div class="links">
+  <a href="https://www.spooncast.net/" target="_blank">🟠 Spoon</a>
+  <a href="https://www.youtube.com/" target="_blank">🔴 YouTube</a>
+  <a href="https://x.com/" target="_blank">🔵 Twitter / X</a>
+  <a href="https://www.twitch.tv/" target="_blank">🟢 Twitcast</a>
+  <a href="#" onclick="return false;">🟣 Membership</a>
+  <a href="#" onclick="return false;">🐰 litlink</a>
 </div>
 
-<div id="setlists"></div>
+<div class="stats">
+  <div class="stat">
+    <strong id="totalStreams">0</strong>
+    <span>streams</span>
+  </div>
+  <div class="stat">
+    <strong id="totalSongs">0</strong>
+    <span>songs total</span>
+  </div>
+  <div class="stat">
+    <strong id="updated">----</strong>
+    <span>updated</span>
+  </div>
+</div>
+
+<div class="searchArea">
+  <input id="search" placeholder="🔍 曲名・アーティスト名で検索..." oninput="render()">
+  <button id="replayFilter" class="filterBtn" onclick="toggleReplayFilter()">● replayあり</button>
+</div>
+
+<div class="sectionTitle">🎵 よく歌う曲　TOP 10</div>
+
+<div id="topSongs"></div>
+
+<div id="months"></div>
+
+<div class="addBox">
+
+<h2>＋ 配信を追加</h2>
+
+<div class="field">
+<label>配信日</label>
+<input id="streamDate" type="date">
+</div>
+
+<div class="field">
+<label>配信タイトル</label>
+<input id="streamTitle" placeholder="新年初配信">
+</div>
+
+<div class="field">
+<label>概要</label>
+<textarea id="streamOverview" placeholder="この配信についての概要"></textarea>
+</div>
+
+<div id="songInputs"></div>
+
+<button class="smallBtn" onclick="addSongInput()">＋ 曲を追加</button>
+
+<button class="primary" onclick="addStream()">この配信を保存</button>
+
+</div>
 
 </main>
 
 <script>
 
-let setlists = JSON.parse(localStorage.getItem("spoonSetlists") || "[]");
+let streams = JSON.parse(localStorage.getItem("livSetlistStreams") || "[]");
+let replayOnly = false;
+
+/* 初期サンプル
+   実際に自分のデータを追加すると自動集計されます
+*/
 
 function save(){
-  localStorage.setItem("spoonSetlists",JSON.stringify(setlists));
+  localStorage.setItem(
+    "livSetlistStreams",
+    JSON.stringify(streams)
+  );
 }
 
-function createSetlist(){
-
-  const title=document.getElementById("setTitle").value.trim();
-  const overview=document.getElementById("setOverview").value.trim();
-
-  if(!title){
-    alert("セトリのタイトルを入力してください");
-    return;
-  }
-
-  setlists.push({
-    title:title,
-    overview:overview,
-    songs:[]
-  });
-
-  document.getElementById("setTitle").value="";
-  document.getElementById("setOverview").value="";
-
-  save();
-  render();
-}
-
-function addSong(index){
-
-  const name=document.getElementById("name"+index).value.trim();
-  const replay=document.getElementById("replay"+index).value.trim();
-  const video=document.getElementById("video"+index).value.trim();
-
-  if(!name){
-    alert("曲名を入力してください");
-    return;
-  }
-
-  setlists[index].songs.push({
-    name:name,
-    replay:replay,
-    video:video
-  });
-
-  save();
-  render();
-}
-
-function deleteSetlist(index){
-
-  if(confirm("このセトリを削除しますか？")){
-    setlists.splice(index,1);
-    save();
-    render();
-  }
-}
-
-function render(){
-
-  const area=document.getElementById("setlists");
-  area.innerHTML="";
-
-  setlists.forEach((set,index)=>{
-
-    let html=`
-      <div class="setlist">
-
-        <h2>${escapeHtml(set.title)}</h2>
-
-        ${
-          set.overview
-          ? `<div class="overview">${escapeHtml(set.overview)}</div>`
-          : ""
-        }
-
-        <h3>セトリ</h3>
-    `;
-
-    set.songs.forEach((song,i)=>{
-
-      html+=`
-        <div class="song">
-          <b>
-            <span class="num">${i+1}.</span>
-            ${escapeHtml(song.name)}
-          </b>
-          <br>
-          ${
-            song.replay
-            ? `<a href="${escapeAttr(song.replay)}" target="_blank">▶ Spoonリプレイ</a>`
-            : ""
-          }
-          ${
-            song.video
-            ? `<br><a href="${escapeAttr(song.video)}" target="_blank">🎬 動画</a>`
-            : ""
-          }
-        </div>
-      `;
-
-    });
-
-    html+=`
-
-        <input id="name${index}" placeholder="曲名">
-        <input id="replay${index}" placeholder="SpoonリプレイURL">
-        <input id="video${index}" placeholder="動画URL（任意）">
-
-        <button onclick="addSong(${index})">
-          ＋曲を追加
-        </button>
-
-        <button class="delete" onclick="deleteSetlist(${index})">
-          このセトリを削除
-        </button>
-
-      </div>
-    `;
-
-    area.innerHTML+=html;
-
-  });
-
-}
-
-function escapeHtml(str){
-  return str
+function escapeHTML(value){
+  return String(value || "")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
@@ -231,9 +552,497 @@ function escapeHtml(str){
     .replace(/'/g,"&#039;");
 }
 
-function escapeAttr(str){
-  return escapeHtml(str);
+function escapeURL(value){
+  try{
+    const u = new URL(value);
+    if(u.protocol === "http:" || u.protocol === "https:"){
+      return u.href;
+    }
+  }catch(e){}
+  return "#";
 }
+
+function addSongInput(){
+
+  const area = document.getElementById("songInputs");
+
+  const box = document.createElement("div");
+  box.className = "songInput";
+
+  box.innerHTML = `
+    <div class="songInputTitle">曲</div>
+
+    <input class="songName" placeholder="曲名">
+
+    <input class="songArtist" placeholder="アーティスト名">
+
+    <input class="songReplay" placeholder="SpoonリプレイURL">
+
+    <input class="songVideo" placeholder="動画URL（任意）">
+
+    <input class="songTime" placeholder="タイムスタンプ（任意）">
+
+    <button class="deleteBtn" onclick="this.parentElement.remove()">
+      この曲を削除
+    </button>
+  `;
+
+  area.appendChild(box);
+}
+
+function addStream(){
+
+  const date = document.getElementById("streamDate").value;
+  const title = document.getElementById("streamTitle").value.trim();
+  const overview = document.getElementById("streamOverview").value.trim();
+
+  if(!date || !title){
+    alert("配信日とタイトルを入力してください");
+    return;
+  }
+
+  const boxes = document.querySelectorAll(".songInput");
+  const songs = [];
+
+  boxes.forEach(box => {
+
+    const name = box.querySelector(".songName").value.trim();
+    const artist = box.querySelector(".songArtist").value.trim();
+    const replay = box.querySelector(".songReplay").value.trim();
+    const video = box.querySelector(".songVideo").value.trim();
+    const time = box.querySelector(".songTime").value.trim();
+
+    if(name){
+      songs.push({
+        name,
+        artist,
+        replay,
+        video,
+        time
+      });
+    }
+
+  });
+
+  streams.push({
+    date,
+    title,
+    overview,
+    songs
+  });
+
+  streams.sort((a,b) => b.date.localeCompare(a.date));
+
+  save();
+
+  document.getElementById("streamDate").value="";
+  document.getElementById("streamTitle").value="";
+  document.getElementById("streamOverview").value="";
+  document.getElementById("songInputs").innerHTML="";
+
+  render();
+
+  window.scrollTo({
+    top:document.body.scrollHeight,
+    behavior:"smooth"
+  });
+}
+
+function getMonthKey(date){
+  return date.substring(0,7);
+}
+
+function monthName(month){
+
+  const names=[
+    "January","February","March","April",
+    "May","June","July","August",
+    "September","October","November","December"
+  ];
+
+  return names[month-1];
+}
+
+function getStats(list){
+
+  const songMap={};
+  const artistMap={};
+
+  list.forEach(stream=>{
+    stream.songs.forEach(song=>{
+
+      songMap[song.name] =
+        (songMap[song.name] || 0) + 1;
+
+      if(song.artist){
+        artistMap[song.artist] =
+          (artistMap[song.artist] || 0) + 1;
+      }
+
+    });
+  });
+
+  return {
+    songs:Object.entries(songMap)
+      .sort((a,b)=>b[1]-a[1]),
+
+    artists:Object.entries(artistMap)
+      .sort((a,b)=>b[1]-a[1])
+  };
+}
+
+function rankingHTML(items,limit=3){
+
+  return items.slice(0,limit).map((item,i)=>`
+
+    <div class="rank">
+      <span class="num">${i+1}</span>
+      <span>${escapeHTML(item[0])}</span>
+      <span class="count">×${item[1]}</span>
+    </div>
+
+  `).join("");
+}
+
+function renderTopSongs(){
+
+  const all=[];
+
+  streams.forEach(stream=>{
+    stream.songs.forEach(song=>{
+      all.push(song);
+    });
+  });
+
+  const map={};
+
+  all.forEach(song=>{
+    map[song.name]=(map[song.name]||0)+1;
+  });
+
+  const ranking=Object.entries(map)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,10);
+
+  const area=document.getElementById("topSongs");
+
+  if(!ranking.length){
+    area.innerHTML=`<div class="empty">まだ曲が登録されていません</div>`;
+    return;
+  }
+
+  area.innerHTML=ranking.map((x,i)=>`
+
+    <div class="rank" style="padding:8px 0;border-bottom:1px solid #181818">
+      <span class="num">${i+1}</span>
+      <span>${escapeHTML(x[0])}</span>
+      <span class="count">×${x[1]}</span>
+    </div>
+
+  `).join("");
+}
+
+function toggleReplayFilter(){
+
+  replayOnly=!replayOnly;
+
+  document
+    .getElementById("replayFilter")
+    .classList.toggle("active",replayOnly);
+
+  render();
+}
+
+function toggleStream(el){
+
+  el.classList.toggle("open");
+
+  const arrow=el.querySelector(".arrow");
+
+  arrow.textContent =
+    el.classList.contains("open") ? "▲" : "▼";
+}
+
+function render(){
+
+  const search=
+    document.getElementById("search").value
+      .trim()
+      .toLowerCase();
+
+  document.getElementById("totalStreams").textContent=
+    streams.length;
+
+  document.getElementById("totalSongs").textContent=
+    streams.reduce((sum,s)=>sum+s.songs.length,0);
+
+  document.getElementById("updated").textContent=
+    new Date().toISOString().slice(0,10).replaceAll("-","/");
+
+  renderTopSongs();
+
+  const filteredStreams=streams.map(stream=>{
+
+    const songs=stream.songs.filter(song=>{
+
+      const matchSearch =
+        !search ||
+        song.name.toLowerCase().includes(search) ||
+        (song.artist||"").toLowerCase().includes(search);
+
+      const matchReplay =
+        !replayOnly || !!song.replay;
+
+      return matchSearch && matchReplay;
+    });
+
+    return {...stream,songs};
+
+  }).filter(stream=>{
+
+    if(search || replayOnly){
+      return stream.songs.length>0;
+    }
+
+    return true;
+  });
+
+  const groups={};
+
+  filteredStreams.forEach(stream=>{
+
+    const key=getMonthKey(stream.date);
+
+    if(!groups[key]){
+      groups[key]=[];
+    }
+
+    groups[key].push(stream);
+  });
+
+  const area=document.getElementById("months");
+
+  area.innerHTML="";
+
+  const years={};
+
+  Object.keys(groups)
+    .sort((a,b)=>b.localeCompare(a))
+    .forEach(key=>{
+
+      const year=key.substring(0,4);
+      const month=parseInt(key.substring(5,7));
+
+      if(!years[year]){
+        years[year]=[];
+      }
+
+      years[year].push({
+        key,
+        month,
+        streams:groups[key]
+      });
+
+    });
+
+  Object.keys(years)
+    .sort((a,b)=>b-a)
+    .forEach(year=>{
+
+      const yearBox=document.createElement("div");
+      yearBox.className="year";
+
+      yearBox.innerHTML=
+        `<div class="yearTitle">${year}</div>`;
+
+      years[year]
+        .sort((a,b)=>b.month-a.month)
+        .forEach(data=>{
+
+          const monthStreams=data.streams;
+
+          const totalSongs=
+            monthStreams.reduce(
+              (sum,s)=>sum+s.songs.length,0
+            );
+
+          const stats=getStats(monthStreams);
+
+          const monthBox=document.createElement("div");
+          monthBox.className="month";
+
+          monthBox.innerHTML=`
+
+            <div class="monthHead">
+
+              <div class="monthName">
+                ${monthName(data.month)} — ${data.month}月
+              </div>
+
+              <div class="monthCount">
+                ${monthStreams.length} streams · ${totalSongs} songs
+              </div>
+
+              <div class="rankings">
+
+                <div>
+                  <div class="rankTitle">
+                    TOP ARTISTS
+                  </div>
+
+                  ${rankingHTML(stats.artists)}
+                </div>
+
+                <div>
+                  <div class="rankTitle">
+                    TOP SONGS
+                  </div>
+
+                  ${rankingHTML(stats.songs)}
+                </div>
+
+              </div>
+
+            </div>
+
+          `;
+
+          monthStreams.forEach((stream,index)=>{
+
+            const streamBox=document.createElement("div");
+            streamBox.className="stream";
+
+            const originalIndex=
+              streams.indexOf(stream);
+
+            const songsHTML=
+              stream.songs.map((song,i)=>`
+
+                <div class="song">
+
+                  <div class="songNo">
+                    ${i+1}
+                  </div>
+
+                  <div class="songName">
+                    ${escapeHTML(song.name)}
+                  </div>
+
+                  ${
+                    song.artist
+                    ? `<div class="artist">
+                        ${escapeHTML(song.artist)}
+                       </div>`
+                    :""
+                  }
+
+                  ${
+                    song.time
+                    ? `<div class="time">
+                        ${escapeHTML(song.time)}
+                       </div>`
+                    :""
+                  }
+
+                  <div class="songLinks">
+
+                    ${
+                      song.replay
+                      ? `<a href="${escapeURL(song.replay)}"
+                           target="_blank"
+                           rel="noopener">
+                           ▶ Spoonリプレイ
+                         </a>`
+                      :""
+                    }
+
+                    ${
+                      song.video
+                      ? `<a href="${escapeURL(song.video)}"
+                           target="_blank"
+                           rel="noopener">
+                           🎬 動画
+                         </a>`
+                      :""
+                    }
+
+                  </div>
+
+                </div>
+
+              `).join("");
+
+            streamBox.innerHTML=`
+
+              <div class="streamHead"
+                   onclick="toggleStream(this.parentElement)">
+
+                <div class="streamNo">
+                  #${String(index+1).padStart(2,"0")}
+                </div>
+
+                <div>
+                  <div class="streamTitle">
+                    ${escapeHTML(stream.title)}
+                  </div>
+
+                  <div class="streamSongs">
+                    ${stream.songs.length} songs
+                  </div>
+                </div>
+
+                <div class="arrow">▼</div>
+
+              </div>
+
+              <div class="streamBody">
+
+                ${
+                  stream.overview
+                  ? `<div class="overview">
+                       ${escapeHTML(stream.overview)}
+                     </div>`
+                  :""
+                }
+
+                ${songsHTML}
+
+              </div>
+
+            `;
+
+            monthBox.appendChild(streamBox);
+
+          });
+
+          yearBox.appendChild(monthBox);
+
+        });
+
+      area.appendChild(yearBox);
+
+    });
+
+  if(!Object.keys(groups).length){
+
+    area.innerHTML=
+      `<div class="empty">
+        ${
+          streams.length
+          ? "検索条件に一致する曲がありません"
+          : "まだ配信が登録されていません"
+        }
+       </div>`;
+
+  }
+
+}
+
+/* 最初の曲入力欄 */
+
+addSongInput();
+
+/* 初回表示 */
 
 render();
 
