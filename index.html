@@ -4,64 +4,719 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SPOON SETLIST</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;background:#090909;color:#eee;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif}
-main{max-width:760px;margin:auto;padding:26px 16px 80px}a{color:inherit}.head{text-align:center;padding:12px 0 28px}.head h1{margin:0;font-size:28px;letter-spacing:5px}.head p{color:#666;font-size:11px;letter-spacing:4px}
-.links{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-bottom:30px}.links a{border:1px solid #333;border-radius:30px;padding:10px 15px;text-decoration:none;color:#aaa;font-size:13px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);border-block:1px solid #292929;margin:0 -16px 28px}.stat{text-align:center;padding:24px 4px;border-right:1px solid #292929}.stat:last-child{border:0}.stat b{display:block;font-size:30px}.stat small{color:#555;letter-spacing:2px}
-.search{display:flex;gap:10px;margin-bottom:22px}input,textarea{width:100%;background:#111;color:#eee;border:1px solid #333;border-radius:25px;padding:12px 16px;font:inherit;outline:0}textarea{min-height:85px;border-radius:14px}.filter,.addbtn,.save,.delete{font:inherit;border-radius:24px;padding:10px 15px;border:1px solid #333;background:#111;color:#aaa}.filter.active{color:#ff7640;border-color:#ff7640}
-.section{padding:15px 5px;border-bottom:1px solid #222;color:#777;letter-spacing:3px}.year{margin-top:36px}.yeartitle{display:flex;gap:15px;align-items:center;color:#555;letter-spacing:5px}.yeartitle:after{content:"";height:1px;background:#292929;flex:1}
-.month{margin:24px 0;border:1px solid #292929;border-radius:15px;background:#111;overflow:hidden}.monthhead{padding:23px 20px}.monthname{font-size:23px;font-weight:700}.count{color:#555;margin-top:7px}.ranks{display:grid;grid-template-columns:1fr 1fr;gap:25px;border-top:1px solid #242424;margin-top:20px;padding-top:18px}.rt{color:#555;font-size:10px;letter-spacing:3px}.rank{display:flex;gap:8px;margin:8px 0;font-size:13px}.rank .n{color:#555;width:17px}.rank .c{margin-left:auto;color:#555}
-.stream{border-top:1px solid #242424}.streamhead{display:grid;grid-template-columns:50px 1fr 40px;align-items:center;padding:19px 20px;cursor:pointer}.no{color:#555}.stitle{font-size:17px;font-weight:700}.scount{font-size:13px;color:#555;margin-top:5px}.arrow{width:36px;height:36px;border:1px solid #333;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#777}.streambody{display:none;padding:0 20px 22px 70px}.stream.open .streambody{display:block}.overview{background:#0b0b0b;border-radius:10px;padding:14px;color:#aaa;white-space:pre-wrap;line-height:1.7;margin-bottom:10px}.song{padding:13px 0;border-bottom:1px solid #202020}.songno{font-size:11px;color:#555}.songname{font-size:17px;margin-top:4px}.artist{font-size:13px;color:#555;margin-top:4px}.time{font-size:11px;color:#777;margin-top:7px}.songlinks{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.songlinks a{font-size:11px;text-decoration:none;border:1px solid #333;border-radius:20px;padding:6px 10px;color:#aaa}
-.addbox{margin-top:50px;border:1px solid #292929;border-radius:15px;background:#101010;padding:20px}.addbox h2{font-size:17px}.field{margin:10px 0}label{display:block;color:#666;font-size:11px;margin:0 0 5px 4px}.songinput{border:1px solid #292929;border-radius:12px;padding:12px;margin:10px 0}.songinput input{margin:4px 0}.delete{color:#d88;border-color:#533;margin-top:7px}.save{width:100%;margin-top:10px;background:#eee;color:#111}.empty{text-align:center;color:#555;padding:40px}
-@media(max-width:550px){.ranks{grid-template-columns:1fr}.search{flex-direction:column}.filter{padding:11px}.streambody{padding-left:58px}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+margin:0;
+background:#080808;
+color:#eee;
+font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif
+}
+main{max-width:780px;margin:auto;padding:30px 18px 90px}
+a{color:inherit}
+
+.head{text-align:center;padding:8px 0 28px}
+.head h1{margin:0;font-size:30px;letter-spacing:7px;font-weight:600}
+.head p{margin:10px 0 0;color:#666;font-size:10px;letter-spacing:4px}
+
+.links{
+display:flex;
+justify-content:center;
+gap:8px;
+flex-wrap:wrap;
+margin-bottom:34px
+}
+.links a{
+padding:9px 15px;
+border:1px solid #303030;
+border-radius:20px;
+text-decoration:none;
+color:#888;
+font-size:12px
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+margin:0 -18px 30px;
+border-top:1px solid #242424;
+border-bottom:1px solid #242424
+}
+.stat{
+padding:24px 5px;
+text-align:center;
+border-right:1px solid #242424
+}
+.stat:last-child{border:0}
+.stat strong{
+display:block;
+font-size:31px;
+font-weight:500
+}
+.stat span{
+display:block;
+margin-top:7px;
+color:#555;
+font-size:10px;
+letter-spacing:2px
+}
+
+.search{display:flex;gap:10px;margin-bottom:25px}
+input,textarea{
+width:100%;
+background:#0e0e0e;
+color:#eee;
+border:1px solid #303030;
+border-radius:22px;
+padding:12px 16px;
+font:inherit;
+outline:0
+}
+textarea{
+border-radius:12px;
+min-height:90px
+}
+.filter{
+white-space:nowrap;
+background:#0e0e0e;
+color:#888;
+border:1px solid #333;
+border-radius:22px;
+padding:10px 15px;
+font:inherit
+}
+.filter.active{
+color:#ff7440;
+border-color:#ff7440
+}
+
+.section{
+padding:16px 5px;
+border-bottom:1px solid #242424;
+color:#777;
+font-size:12px;
+letter-spacing:3px
+}
+
+.year{margin-top:38px}
+.yearTitle{
+display:flex;
+align-items:center;
+gap:15px;
+color:#555;
+font-size:13px;
+letter-spacing:5px
+}
+.yearTitle:after{
+content:"";
+height:1px;
+background:#292929;
+flex:1
+}
+
+.month{
+margin:22px 0;
+border:1px solid #292929;
+border-radius:17px;
+background:#101010;
+overflow:hidden
+}
+.monthHead{padding:25px 22px 21px}
+.monthName{
+font-size:24px;
+font-weight:600
+}
+.monthCount{
+margin-top:7px;
+color:#555;
+font-size:13px
+}
+
+.ranks{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:30px;
+margin-top:21px;
+padding-top:19px;
+border-top:1px solid #242424
+}
+.rankTitle{
+margin-bottom:11px;
+color:#555;
+font-size:9px;
+letter-spacing:3px
+}
+.rank{
+display:flex;
+gap:8px;
+margin:9px 0;
+font-size:13px
+}
+.rank .n{width:16px;color:#555}
+.rank .c{margin-left:auto;color:#555}
+
+.stream{
+border-top:1px solid #242424
+}
+.streamHead{
+display:grid;
+grid-template-columns:48px 1fr 40px;
+align-items:center;
+padding:20px 22px;
+cursor:pointer
+}
+.no{
+color:#555;
+font-size:12px
+}
+.streamTitle{
+font-size:17px;
+font-weight:600
+}
+.streamSongs{
+margin-top:5px;
+color:#555;
+font-size:12px
+}
+.arrow{
+width:35px;
+height:35px;
+border:1px solid #333;
+border-radius:9px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:#777
+}
+.streamBody{
+display:none;
+padding:0 22px 24px 70px
+}
+.stream.open .streamBody{display:block}
+
+.overview{
+padding:14px;
+background:#0a0a0a;
+border-radius:10px;
+color:#aaa;
+line-height:1.7;
+white-space:pre-wrap;
+margin-bottom:10px
+}
+
+.song{
+padding:14px 0;
+border-bottom:1px solid #202020
+}
+.songNo{
+color:#555;
+font-size:10px
+}
+.songName{
+margin-top:4px;
+font-size:17px
+}
+.artist{
+margin-top:4px;
+color:#555;
+font-size:13px
+}
+.time{
+margin-top:7px;
+color:#777;
+font-size:11px
+}
+.songLinks{
+display:flex;
+gap:7px;
+flex-wrap:wrap;
+margin-top:9px
+}
+.songLinks a{
+padding:6px 10px;
+border:1px solid #333;
+border-radius:18px;
+text-decoration:none;
+color:#999;
+font-size:10px
+}
+
+.add{
+margin-top:55px;
+padding:21px;
+border:1px solid #292929;
+border-radius:17px;
+background:#0f0f0f
+}
+.add h2{
+font-size:16px;
+font-weight:500
+}
+.field{margin:11px 0}
+label{
+display:block;
+margin:0 0 5px 4px;
+color:#666;
+font-size:10px
+}
+.addsong{
+margin:10px 0;
+padding:12px;
+border:1px solid #292929;
+border-radius:12px
+}
+.addsong input{
+margin:4px 0
+}
+.del{
+margin-top:7px;
+background:#0e0e0e;
+color:#d88;
+border:1px solid #533;
+border-radius:22px;
+padding:7px 12px
+}
+.small{
+background:#0e0e0e;
+color:#888;
+border:1px solid #333;
+border-radius:22px;
+padding:9px 14px
+}
+.save{
+width:100%;
+margin-top:10px;
+background:#eee;
+color:#111;
+border:1px solid #eee;
+border-radius:22px;
+padding:13px
+}
+.empty{
+text-align:center;
+padding:45px 10px;
+color:#555
+}
+
+@media(max-width:550px){
+.head h1{font-size:25px}
+.ranks{grid-template-columns:1fr;gap:8px}
+.search{flex-direction:column}
+.filter{padding:11px}
+.streamBody{
+padding-left:58px;
+padding-right:14px
+}
+}
 </style>
 </head>
-<body><main>
-<header class="head"><h1>SPOON SETLIST</h1><p>SETLIST RECORD</p></header>
-<nav class="links">
-<a href="https://www.spooncast.net/" target="_blank">Spoon</a><a href="https://www.youtube.com/" target="_blank">YouTube</a><a href="https://x.com/" target="_blank">X</a><a href="https://twitcasting.tv/" target="_blank">Twitcast</a><a href="#">Membership</a><a href="#">lit.link</a>
-</nav>
-<section class="stats"><div class="stat"><b id="streams">0</b><small>streams</small></div><div class="stat"><b id="songs">0</b><small>songs total</small></div><div class="stat"><b id="updated">----</b><small>updated</small></div></section>
-<div class="search"><input id="search" placeholder="🔍 曲名・アーティスト名で検索"><button id="filter" class="filter">● replayあり</button></div>
-<div class="section">🎵 よく歌う曲 TOP 10</div><div id="top"></div><div id="months"></div>
-<section class="addbox"><h2>＋ 配信を追加</h2>
-<div class="field"><label>配信日</label><input id="date" type="date"></div>
-<div class="field"><label>配信タイトル</label><input id="title" placeholder="配信タイトル"></div>
-<div class="field"><label>概要</label><textarea id="overview" placeholder="この配信の概要"></textarea></div>
+
+<body>
+<main>
+
+<header class="head">
+<h1>SPOON SETLIST</h1>
+<p>SETLIST RECORD</p>
+</header>
+
+<div class="links">
+<a href="https://www.spooncast.net/" target="_blank">Spoon</a>
+<a href="https://www.youtube.com/" target="_blank">YouTube</a>
+<a href="https://x.com/" target="_blank">X</a>
+<a href="https://twitcasting.tv/" target="_blank">Twitcast</a>
+<a href="#">Membership</a>
+<a href="#">lit.link</a>
+</div>
+
+<div class="stats">
+<div class="stat">
+<strong id="streams">0</strong>
+<span>streams</span>
+</div>
+<div class="stat">
+<strong id="songs">0</strong>
+<span>songs total</span>
+</div>
+<div class="stat">
+<strong id="updated">----</strong>
+<span>updated</span>
+</div>
+</div>
+
+<div class="search">
+<input id="search" placeholder="🔍 曲名・アーティスト名で検索" oninput="render()">
+<button id="filter" class="filter" onclick="toggleFilter()">● replayあり</button>
+</div>
+
+<div class="section">🎵 よく歌う曲 TOP 10</div>
+<div id="top"></div>
+
+<div id="months"></div>
+
+<div class="add">
+<h2>＋ 配信を追加</h2>
+
+<div class="field">
+<label>配信日</label>
+<input id="date" type="date">
+</div>
+
+<div class="field">
+<label>配信タイトル</label>
+<input id="title" placeholder="配信タイトル">
+</div>
+
+<div class="field">
+<label>概要</label>
+<textarea id="overview" placeholder="この配信の概要"></textarea>
+</div>
+
 <div id="songInputs"></div>
-<button class="addbtn" id="addSong">＋ 曲を追加</button><button class="save" id="saveStream">この配信を保存</button>
-</section>
+
+<button class="small" onclick="songInput()">＋ 曲を追加</button>
+<button class="save" onclick="addStream()">この配信を保存</button>
+</div>
+
 </main>
+
 <script>
-const KEY="spoonSetlistV2";let data=JSON.parse(localStorage.getItem(KEY)||"[]"),replayOnly=false;
-const $=id=>document.getElementById(id);
-const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
-function safeUrl(v){try{let u=new URL(v);return/^https?:$/.test(u.protocol)?u.href:"#"}catch{return"#"}}
-function addSongInput(){
- const d=document.createElement("div");d.className="songinput";
- d.innerHTML='<input class="sn" placeholder="曲名"><input class="sa" placeholder="アーティスト名"><input class="sr" placeholder="SpoonリプレイURL"><input class="sv" placeholder="動画URL（任意）"><input class="st" placeholder="タイムスタンプ（任意）"><button class="delete">この曲を削除</button>';
- d.querySelector(".delete").onclick=()=>d.remove();$("songInputs").appendChild(d);
+let data=JSON.parse(localStorage.getItem("spoonSetlist")||"[]");
+let replayOnly=false;
+
+function esc(v){
+return String(v||"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
 }
-function saveStream(){
- const date=$("date").value,title=$("title").value.trim();if(!date||!title){alert("配信日とタイトルを入力してください");return}
- const songs=[...document.querySelectorAll(".songinput")].map(d=>({name:d.querySelector(".sn").value.trim(),artist:d.querySelector(".sa").value.trim(),replay:d.querySelector(".sr").value.trim(),video:d.querySelector(".sv").value.trim(),time:d.querySelector(".st").value.trim()})).filter(x=>x.name);
- data.push({date,title,overview:$("overview").value.trim(),songs});data.sort((a,b)=>b.date.localeCompare(a.date));localStorage.setItem(KEY,JSON.stringify(data));
- $("date").value=$("title").value=$("overview").value="";$("songInputs").innerHTML="";addSongInput();render();
+
+function url(v){
+try{
+let u=new URL(v);
+return["http:","https:"].includes(u.protocol)?u.href:"#"
+}catch(e){
+return"#"
 }
-function ranking(list){return Object.entries(list).sort((a,b)=>b[1]-a[1]).slice(0,3).map((x,i)=>`<div class="rank"><span class="n">${i+1}</span><span>${esc(x[0])}</span><span class="c">×${x[1]}</span></div>`).join("")}
-function stats(list){let songs={},artists={};list.forEach(s=>s.songs.forEach(x=>{songs[x.name]=(songs[x.name]||0)+1;if(x.artist)artists[x.artist]=(artists[x.artist]||0)+1}));return{songs,artists}}
+}
+
+function songInput(){
+let d=document.createElement("div");
+d.className="addsong";
+d.innerHTML=
+'<input class="sn" placeholder="曲名">'+
+'<input class="sa" placeholder="アーティスト名">'+
+'<input class="sr" placeholder="SpoonリプレイURL">'+
+'<input class="sv" placeholder="動画URL（任意）">'+
+'<input class="st" placeholder="タイムスタンプ（任意）">'+
+'<button class="del" onclick="this.parentElement.remove()">この曲を削除</button>';
+document.getElementById("songInputs").appendChild(d)
+}
+
+function addStream(){
+
+let date=document.getElementById("date").value;
+let title=document.getElementById("title").value.trim();
+
+if(!date||!title){
+alert("配信日とタイトルを入力してください");
+return
+}
+
+let songs=[];
+
+document.querySelectorAll(".addsong").forEach(x=>{
+let name=x.querySelector(".sn").value.trim();
+
+if(name){
+songs.push({
+name,
+artist:x.querySelector(".sa").value.trim(),
+replay:x.querySelector(".sr").value.trim(),
+video:x.querySelector(".sv").value.trim(),
+time:x.querySelector(".st").value.trim()
+})
+}
+});
+
+data.push({
+date,
+title,
+overview:document.getElementById("overview").value.trim(),
+songs
+});
+
+data.sort((a,b)=>b.date.localeCompare(a.date));
+
+localStorage.setItem("spoonSetlist",JSON.stringify(data));
+
+document.getElementById("date").value="";
+document.getElementById("title").value="";
+document.getElementById("overview").value="";
+document.getElementById("songInputs").innerHTML="";
+
+songInput();
+render()
+}
+
+function toggleFilter(){
+replayOnly=!replayOnly;
+document.getElementById("filter").classList.toggle("active",replayOnly);
+render()
+}
+
+function toggle(el){
+el.classList.toggle("open");
+el.querySelector(".arrow").textContent=
+el.classList.contains("open")?"▲":"▼"
+}
+
+function counts(list){
+
+let songs={},artists={};
+
+list.forEach(s=>{
+s.songs.forEach(x=>{
+songs[x.name]=(songs[x.name]||0)+1;
+
+if(x.artist)
+artists[x.artist]=(artists[x.artist]||0)+1
+})
+});
+
+return{
+songs:Object.entries(songs).sort((a,b)=>b[1]-a[1]),
+artists:Object.entries(artists).sort((a,b)=>b[1]-a[1])
+}
+}
+
+function ranks(a){
+return a.slice(0,3).map((x,i)=>
+'<div class="rank">'+
+'<span class="n">'+(i+1)+'</span>'+
+'<span>'+esc(x[0])+'</span>'+
+'<span class="c">×'+x[1]+'</span>'+
+'</div>'
+).join("")
+}
+
 function render(){
- const q=$("search").value.toLowerCase().trim();$("streams").textContent=data.length;$("songs").textContent=data.reduce((n,s)=>n+s.songs.length,0);$("updated").textContent=new Date().toISOString().slice(0,10).replaceAll("-","/");
- let all={};data.forEach(s=>s.songs.forEach(x=>all[x.name]=(all[x.name]||0)+1));let top=Object.entries(all).sort((a,b)=>b[1]-a[1]).slice(0,10);
- $("top").innerHTML=top.length?top.map((x,i)=>`<div class="rank" style="padding:9px 5px;border-bottom:1px solid #181818"><span class="n">${i+1}</span><span>${esc(x[0])}</span><span class="c">×${x[1]}</span></div>`).join(""):'<div class="empty">まだ曲がありません</div>';
- let groups={};data.forEach(s=>{let songs=s.songs.filter(x=>(!q||x.name.toLowerCase().includes(q)||(x.artist||"").toLowerCase().includes(q))&&(!replayOnly||x.replay));if((q||replayOnly)&&!songs.length)return;(groups[s.date.slice(0,7)]??=[]).push({...s,songs})});
- const names=["","January","February","March","April","May","June","July","August","September","October","November","December"];let html="";
- Object.keys(groups).sort((a,b)=>b.localeCompare(a)).forEach(k=>{let year=k.slice(0,4),mo=+k.slice(5),list=groups[k],total=list.reduce((n,s)=>n+s.songs.length,0),c=stats(list);
- html+=`<div class="year"><div class="yeartitle">${year}</div><div class="month"><div class="monthhead"><div class="monthname">${names[mo]} — ${mo}月</div><div class="count">${list.length} streams · ${total} songs</div><div class="ranks"><div><div class="rt">TOP ARTISTS</div>${ranking(c.artists)}</div><div><div class="rt">TOP SONGS</div>${ranking(c.songs)}</div></div></div>`;
- list.forEach((s,i)=>{html+=`<div class="stream"><div class="streamhead"><div class="no">#${String(i+1).padStart(2,"0")}</div><div><div class="stitle">${esc(s.title)}</div><div class="scount">${s.songs.length} songs</div></div><div class="arrow">▼</div></div><div class="streambody">${s.overview?`<div class="overview">${esc(s.overview)}</div>`:""}${s.songs.map((x,n)=>`<div class="song"><div class="songno">${n+1}</div><div class="songname">${esc(x.name)}</div>${x.artist?`<div class="artist">${esc(x.artist)}</div>`:""}${x.time?`<div class="time">${esc(x.time)}</div>`:""}<div class="songlinks">${x.replay?`<a href="${safeUrl(x.replay)}" target="_blank" rel="noopener">▶ Spoonリプレイ</a>`:""}${x.video?`<a href="${safeUrl(x.video)}" target="_blank" rel="noopener">🎬 動画</a>`:""}</div></div>`).join("")}</div></div>`});html+="</div></div>"});
- $("months").innerHTML=html||'<div class="empty">まだ配信がありません</div>';
- document.querySelectorAll(".streamhead").forEach(h=>h.onclick=()=>{let s=h.parentElement;s.classList.toggle("open");h.querySelector(".arrow").textContent=s.classList.contains("open")?"▲":"▼"});
+
+let q=document.getElementById("search").value.toLowerCase().trim();
+
+document.getElementById("streams").textContent=data.length;
+
+document.getElementById("songs").textContent=
+data.reduce((n,s)=>n+s.songs.length,0);
+
+document.getElementById("updated").textContent=
+new Date().toISOString().slice(0,10).replaceAll("-","/");
+
+let all={};
+
+data.forEach(s=>{
+s.songs.forEach(x=>{
+all[x.name]=(all[x.name]||0)+1
+})
+});
+
+let top=Object.entries(all)
+.sort((a,b)=>b[1]-a[1])
+.slice(0,10);
+
+document.getElementById("top").innerHTML=
+top.length?
+top.map((x,i)=>
+'<div class="rank" style="padding:9px 5px;border-bottom:1px solid #181818">'+
+'<span class="n">'+(i+1)+'</span>'+
+'<span>'+esc(x[0])+'</span>'+
+'<span class="c">×'+x[1]+'</span>'+
+'</div>'
+).join("")
+:
+'<div class="empty">まだ曲がありません</div>';
+
+let groups={};
+
+data.forEach(s=>{
+
+let songs=s.songs.filter(x=>
+(!q||
+x.name.toLowerCase().includes(q)||
+(x.artist||"").toLowerCase().includes(q))
+&&
+(!replayOnly||x.replay)
+);
+
+if((q||replayOnly)&&!songs.length)return;
+
+let key=s.date.slice(0,7);
+
+(groups[key]??=[]).push({
+...s,
+songs
+})
+});
+
+let html="";
+
+let months=[
+"",
+"January",
+"February",
+"March",
+"April",
+"May",
+"June",
+"July",
+"August",
+"September",
+"October",
+"November",
+"December"
+];
+
+Object.keys(groups)
+.sort((a,b)=>b.localeCompare(a))
+.forEach(key=>{
+
+let year=key.slice(0,4);
+let month=Number(key.slice(5));
+let list=groups[key];
+
+let total=list.reduce((n,s)=>n+s.songs.length,0);
+let c=counts(list);
+
+html+=
+'<div class="year">'+
+'<div class="yearTitle">'+year+'</div>'+
+'<div class="month">'+
+
+'<div class="monthHead">'+
+'<div class="monthName">'+months[month]+' — '+month+'月</div>'+
+'<div class="monthCount">'+
+list.length+' streams · '+total+' songs'+
+'</div>'+
+
+'<div class="ranks">'+
+
+'<div>'+
+'<div class="rankTitle">TOP ARTISTS</div>'+
+ranks(c.artists)+
+'</div>'+
+
+'<div>'+
+'<div class="rankTitle">TOP SONGS</div>'+
+ranks(c.songs)+
+'</div>'+
+
+'</div>'+
+'</div>';
+
+list.forEach((s,i)=>{
+
+html+=
+'<div class="stream">'+
+
+'<div class="streamHead" onclick="toggle(this.parentElement)">'+
+
+'<div class="no">#'+
+String(i+1).padStart(2,"0")+
+'</div>'+
+
+'<div>'+
+'<div class="streamTitle">'+
+esc(s.title)+
+'</div>'+
+'<div class="streamSongs">'+
+s.songs.length+
+' songs</div>'+
+'</div>'+
+
+'<div class="arrow">▼</div>'+
+
+'</div>'+
+
+'<div class="streamBody">'+
+
+(
+s.overview?
+'<div class="overview">'+
+esc(s.overview)+
+'</div>'
+:""
+)+
+
+s.songs.map((x,n)=>
+
+'<div class="song">'+
+
+'<div class="songNo">'+
+(n+1)+
+'</div>'+
+
+'<div class="songName">'+
+esc(x.name)+
+'</div>'+
+
+(
+x.artist?
+'<div class="artist">'+
+esc(x.artist)+
+'</div>'
+:""
+)+
+
+(
+x.time?
+'<div class="time">'+
+esc(x.time)+
+'</div>'
+:""
+)+
+
+'<div class="songLinks">'+
+
+(
+x.replay?
+'<a href="'+
+url(x.replay)+
+'" target="_blank">▶ Spoonリプレイ</a>'
+:""
+)+
+
+(
+x.video?
+'<a href="'+
+url(x.video)+
+'" target="_blank">🎬 動画</a>'
+:""
+)+
+
+'</div>'+
+'</div>'
+
+).join("")+
+
+'</div>'+
+'</div>'
+
+});
+
+html+='</div></div>'
+
+});
+
+document.getElementById("months").innerHTML=
+html||
+'<div class="empty">まだ配信がありません</div>'
 }
-$("addSong").onclick=addSongInput;$("saveStream").onclick=saveStream;$("filter").onclick=()=>{replayOnly=!replayOnly;$("filter").classList.toggle("active",replayOnly);render()};$("search").oninput=render;addSongInput();render();
-</script></body></html>
+
+songInput();
+render();
+</script>
+
+</body>
+</html>
