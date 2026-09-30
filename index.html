@@ -4,78 +4,240 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Spoon Setlist</title>
+
 <style>
-body{margin:0;background:#f7f7f7;font-family:-apple-system,sans-serif;color:#222}
-main{max-width:600px;margin:auto;padding:30px 16px}
-h1{text-align:center}
-.box,.song{background:white;border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 2px 10px #0001}
-input,button{width:100%;box-sizing:border-box;padding:12px;margin:5px 0;border-radius:10px;border:1px solid #ddd;font-size:15px}
-button{background:#222;color:white;border:0}
-.song b{font-size:17px}.num{color:#999;font-size:12px}
-a{display:inline-block;margin-top:8px;color:#555}
-video{width:100%;margin-top:10px;border-radius:10px}
+body{
+  margin:0;
+  background:#f7f7f7;
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  color:#222;
+}
+main{
+  max-width:600px;
+  margin:auto;
+  padding:24px 16px 50px;
+}
+h1{
+  text-align:center;
+}
+.box,.setlist{
+  background:white;
+  border-radius:16px;
+  padding:18px;
+  margin:16px 0;
+  box-shadow:0 2px 8px #ddd;
+}
+input,textarea,button{
+  width:100%;
+  box-sizing:border-box;
+  padding:12px;
+  margin:6px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:16px;
+}
+textarea{
+  min-height:100px;
+  resize:vertical;
+}
+button{
+  background:#222;
+  color:white;
+  border:0;
+}
+.song{
+  padding:12px 0;
+  border-bottom:1px solid #eee;
+}
+.song:last-child{
+  border-bottom:0;
+}
+.song b{
+  font-size:17px;
+}
+.num{
+  color:#999;
+  margin-right:6px;
+}
+a{
+  display:inline-block;
+  margin-top:6px;
+  color:#555;
+}
+.overview{
+  white-space:pre-wrap;
+  background:#f5f5f5;
+  padding:12px;
+  border-radius:10px;
+  margin:10px 0;
+}
+.delete{
+  background:#c33;
+}
 </style>
 </head>
+
 <body>
+
 <main>
-<h1 id="title">SPOON SETLIST</h1>
-<button onclick="let d=prompt('概要を入力');if(d!==null){localStorage.description=d;document.getElementById('description').textContent=d}">概要を設定</button><p id="description"></p><script>document.getElementById('description').textContent=localStorage.description||''</script>
-<div class="box">
-<input id="titleInput" placeholder="配信タイトル">
-<button onclick="setTitle()">タイトルを設定</button>
-</div>
+
+<h1>SPOON SETLIST</h1>
 
 <div class="box">
-<input id="name" placeholder="曲名">
-<input id="replay" placeholder="SpoonリプレイURL">
-<input id="video" placeholder="動画URL（任意）">
-<button onclick="add()">＋ セトリに追加</button>
+  <input id="setTitle" placeholder="セトリのタイトル">
+  <textarea id="setOverview" placeholder="このセトリの概要"></textarea>
+  <button onclick="createSetlist()">＋このセトリを作成</button>
 </div>
 
-<div id="list"></div>
+<div id="setlists"></div>
+
 </main>
 
 <script>
-let songs=JSON.parse(localStorage.songs||"[]");
 
-function setTitle(){
- let t=document.getElementById("titleInput").value;
- if(t){document.getElementById("title").textContent=t;
- localStorage.title=t}
+let setlists = JSON.parse(localStorage.getItem("spoonSetlists") || "[]");
+
+function save(){
+  localStorage.setItem("spoonSetlists",JSON.stringify(setlists));
 }
 
-function add(){
- let n=document.getElementById("name").value;
- let r=document.getElementById("replay").value;
- let v=document.getElementById("video").value;
- if(!n)return;
- songs.push({n,r,v});
- localStorage.songs=JSON.stringify(songs);
- document.getElementById("name").value="";
- document.getElementById("replay").value="";
- document.getElementById("video").value="";
- show();
+function createSetlist(){
+
+  const title=document.getElementById("setTitle").value.trim();
+  const overview=document.getElementById("setOverview").value.trim();
+
+  if(!title){
+    alert("セトリのタイトルを入力してください");
+    return;
+  }
+
+  setlists.push({
+    title:title,
+    overview:overview,
+    songs:[]
+  });
+
+  document.getElementById("setTitle").value="";
+  document.getElementById("setOverview").value="";
+
+  save();
+  render();
 }
 
-function del(i){
- songs.splice(i,1);
- localStorage.songs=JSON.stringify(songs);
- show();
+function addSong(index){
+
+  const name=document.getElementById("name"+index).value.trim();
+  const replay=document.getElementById("replay"+index).value.trim();
+  const video=document.getElementById("video"+index).value.trim();
+
+  if(!name){
+    alert("曲名を入力してください");
+    return;
+  }
+
+  setlists[index].songs.push({
+    name:name,
+    replay:replay,
+    video:video
+  });
+
+  save();
+  render();
 }
 
-function show(){
- document.getElementById("list").innerHTML=songs.map((s,i)=>`
- <div class="song">
- <div class="num">${String(i+1).padStart(2,"0")}</div>
- <b>${s.n}</b><br>
- ${s.r?`<a href="${s.r}" target="_blank">▶ Spoonリプレイ</a>`:""}
- ${s.v?`<video src="${s.v}" controls playsinline></video>`:""}
- <button onclick="del(${i})">削除</button>
- </div>`).join("");
+function deleteSetlist(index){
+
+  if(confirm("このセトリを削除しますか？")){
+    setlists.splice(index,1);
+    save();
+    render();
+  }
 }
 
-if(localStorage.title)document.getElementById("title").textContent=localStorage.title;
-show();
+function render(){
+
+  const area=document.getElementById("setlists");
+  area.innerHTML="";
+
+  setlists.forEach((set,index)=>{
+
+    let html=`
+      <div class="setlist">
+
+        <h2>${escapeHtml(set.title)}</h2>
+
+        ${
+          set.overview
+          ? `<div class="overview">${escapeHtml(set.overview)}</div>`
+          : ""
+        }
+
+        <h3>セトリ</h3>
+    `;
+
+    set.songs.forEach((song,i)=>{
+
+      html+=`
+        <div class="song">
+          <b>
+            <span class="num">${i+1}.</span>
+            ${escapeHtml(song.name)}
+          </b>
+          <br>
+          ${
+            song.replay
+            ? `<a href="${escapeAttr(song.replay)}" target="_blank">▶ Spoonリプレイ</a>`
+            : ""
+          }
+          ${
+            song.video
+            ? `<br><a href="${escapeAttr(song.video)}" target="_blank">🎬 動画</a>`
+            : ""
+          }
+        </div>
+      `;
+
+    });
+
+    html+=`
+
+        <input id="name${index}" placeholder="曲名">
+        <input id="replay${index}" placeholder="SpoonリプレイURL">
+        <input id="video${index}" placeholder="動画URL（任意）">
+
+        <button onclick="addSong(${index})">
+          ＋曲を追加
+        </button>
+
+        <button class="delete" onclick="deleteSetlist(${index})">
+          このセトリを削除
+        </button>
+
+      </div>
+    `;
+
+    area.innerHTML+=html;
+
+  });
+
+}
+
+function escapeHtml(str){
+  return str
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function escapeAttr(str){
+  return escapeHtml(str);
+}
+
+render();
+
 </script>
+
 </body>
 </html>
